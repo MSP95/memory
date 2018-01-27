@@ -5,6 +5,10 @@ body {
   margin: 0px;
   background-color: #efefef;
 }
+h1{
+  -webkit-transition-duration: 0.2s; /* Safari */
+  transition-duration: 0.2s;
+}
 .main-game{
   text-align: center;
 }
@@ -26,16 +30,9 @@ body {
   color: white;
 }
 
-ol, ul {
-  padding-left: 30px;
+.reset-button:focus{
+  outline:none;
 }
-
-.board-row:after {
-  clear: both;
-  content: "";
-  display: table;
-}
-
 .status {
   margin-bottom: 15px;
 }
@@ -46,27 +43,25 @@ ol, ul {
 .table-grid{
   margin: 0px auto;
 }
-.squarew {
+.square-tile  {
   background: #fff;
-  border: 1px solid #999;
+  border: 2px solid #555555;
   font-size: 74px;
   font-weight: 100;
   line-height: 34px;
-  height: 1.5em;
-  margin-right: 1px;
-  margin-top: 1px;
+  height: 1.7em;
   padding:10px;
+  margin:3px;
   text-align: center;
-  width: 1.5em;
-  box-shadow: 0px 0px 5px 0px;
-  transition-duration: 0.1s;
+  width: 1.7em;
+  box-shadow: 0px 0px 7px 0px;
+  transition-duration: 0.2s;
 
 }
-
-.squarew:focus {
-  outline: none;
+.square-selected{
+  background: #ddd;
+  box-shadow: 0px 0px 0px 0px;
 }
-.squarew:hover{
-  box-shadow: 0px 0px 0px;
-  background: #efefef;
+.square-tile:focus{
+  outline:none;
 }
