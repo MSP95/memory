@@ -62,7 +62,6 @@ class Board extends React.Component {
   reset(){
     let squareval = ["A", "B", "C","D","E","F","G","H","A", "B",
     "C","D","E","F","G","H"];
-
     this.setState({
       squares: this.shuffleArray(squareval),
       currentValues:Array(16).fill(null),
@@ -70,7 +69,6 @@ class Board extends React.Component {
       flag: true,
       score: 0,
       isPaused: false,
-
     });
   }
   pauseInput(pause){
@@ -92,7 +90,6 @@ class Board extends React.Component {
       if(flag == true){
         // elements match <div>&#10003;</div>;
         if(previousVal == val){
-          this.pauseInput(true);
           this.pauseInput(true);
           setTimeout(() => {
             currentValues[id] = <div>&#10003;</div>;
