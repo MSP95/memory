@@ -94,41 +94,35 @@ class Board extends React.Component {
         if(previousVal == val){
           this.pauseInput(true);
           this.pauseInput(true);
-          setTimeout(() => {currentValues[id] = <div>&#10003;</div>;;
-            currentValues[previousId]=<div>&#10003;</div>;;
-              this.changeState(id, currentValues,val,flag, score);
-              this.pauseInput(false);
-            }, 200
-          );
+          setTimeout(() => {
+            currentValues[id] = <div>&#10003;</div>;
+            currentValues[previousId]=<div>&#10003;</div>;
+            this.changeState(id, currentValues,val,flag, score);
+            this.pauseInput(false);}, 200);
         }
-        //elements dont match
+          //elements dont match
         else{
           this.pauseInput(true);
-          setTimeout(() => {currentValues[id] = null;
+          setTimeout(() => {
+            currentValues[id] = null;
             currentValues[previousId]=null;
             this.changeState(id, currentValues,val,flag, score);
-            this.pauseInput(false);
-          }, 1000);
+            this.pauseInput(false);}, 1000);
         }
       }
-      // its first tile
+        // its first tile
       else {
         currentValues[id] = val;
       }
       this.changeState(id, currentValues,val,flag, score);
     }
-    // retired trueelement clicked
-
   }
   calculateWinner(){
-    if(_.every(this.state.currentValues,function(num){
-      return num != null
-    })){
+    if(_.every(this.state.currentValues,function(num){return num != null})){
       return <div><h1> Congrats! You are a winner!</h1>
       <h4><i>Click Reset button to play again.</i></h4></div>
     }
   }
-
   renderSquare(props) {
     return (
       <Square
