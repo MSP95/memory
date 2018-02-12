@@ -14,7 +14,7 @@
       <h3 id="index-page">Log in to join a game</h3>
     <div class="form-group">
       <%= form_for @conn, "/game", [as: :param], fn f -> %>
-      <%= label(f, :user, "Your Name: ") %>
+      <%= label(f, :game, "Your Name: ") %>
       <%= text_input f, :game, class: "form-control" %>
       <br>
       <%= submit "Log in", class: "my-button "  %>
@@ -22,4 +22,4 @@
     </div>
   </div>
 </div>
-<div>
+</div>
