@@ -1,18 +1,25 @@
-<div class="row">
-  <div class="col">
-    <h2 id="index-page">Please login to resume your Game</h2>
-    <!-- <input type="text" id="game-input">
-    <button id="game_button">Log In</button>
-    <p><a href="/game/demo">Join</a></p> -->
+
+
+<div class="container">
+  <br>
+  <h2>Welcome to the Memory Game.</h2>
+  <hr>
+  <div class="row">
     <div class="col-lg-6">
-      <div class="form-group">
-        <%= form_for @conn, "/game", [as: :param], fn f -> %>
-        <%= label(f, :user, "Your Name") %>
-        <%= text_input f, :game, class: "form-control" %>
-        <br>
-        <%= submit "Log in", class: "btn btn-primary"  %>
-        <% end %>
-      </div>
+
+      <p>If you're new, join a game and have fun!</p>
+      <p>Else log in by your name to resume your last game.</p>
+  </div>
+    <div class="col-lg-6">
+      <h3 id="index-page">Log in to join a game</h3>
+    <div class="form-group">
+      <%= form_for @conn, "/game", [as: :param], fn f -> %>
+      <%= label(f, :user, "Your Name: ") %>
+      <%= text_input f, :game, class: "form-control" %>
+      <br>
+      <%= submit "Log in", class: "my-button "  %>
+      <% end %>
     </div>
   </div>
 </div>
+<div>

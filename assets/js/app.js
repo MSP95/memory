@@ -22,35 +22,13 @@ import socket from "./socket"
 
 import memory_init from "./memory";
 
-// function form_init() {
-//   let channel = socket.channel("games:demo", {});
-//   channel.join()
-//          .receive("ok", resp => { console.log("Joined successfully", resp) })
-//          .receive("error", resp => { console.log("Unable to join", resp) });
-//
-//   $('#game-button').click(() => {
-//     let xx = $('#game-input').val();
-//     channel.push("double", { xx: xx }).receive("doubled", msg => {
-//       $('#game-output').text(msg.yy);
-//     });
-//   });
-// }
 function init() {
   let root = document.getElementById('game');
-  let login = document.getElementById('index-page');
   if(root){
     let channel = socket.channel("games:"+window.gameName, {});
-    // channel.join()
-    //   .receive("ok", resp => { console.log("Joined successfully", resp); })
-    //   .receive("error", resp => { console.log("Unable to join", resp); });
+
     memory_init(root, channel);
   }
-  // if (login){
-  //   // TODO
-  //   // form_init();
-  //   $('#game-button').click(() => {
-  //     sessionStorage.setItem(name, $('#game-input').val())
-  //   });
-  }
+}
 // Use jQuery to delay until page loaded.
 $(init);
