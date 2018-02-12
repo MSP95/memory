@@ -31,14 +31,14 @@ environment :dev do
   set dev_mode: true
   set vm_args: "rel/vm.args"
   set include_erts: false
-  set cookie: :"7!ega!qL{42Cm:[JL4rwMfC{0TDHFo~?mwXE2D:>N~H5ee[PeOGRC`UlkN[|,__F"
+  set cookie: :"a5_gMPT`T=>Dl6NBJgAn%ceIMrGDI]3{`Yrb$u^kUh]4NvpZ*(D_Z~;FjwVYC:mJ"
 end
 
 environment :prod do
   set include_erts: true
-  set include_src: false
   set vm_args: "rel/vm.args"
-  set cookie: :"*qUG_NPfTQ6zm8NlVea2eM{N%5_UlCtE7F,u[EuH,cxB6HWFcI?nRMwOypM2Kr/O"
+  set include_src: false
+  set cookie: :"mo0)QAH0}tBD1hEe;b6N3XQV1P/UT!1M]T3WdlkY$jdazo}!wE!:DJ2=yy%R$Z(&"
 end
 
 # You may define one or more releases in this file.
@@ -47,9 +47,11 @@ end
 # will be used by default
 
 release :memory do
+
   set vm_args: "rel/vm.args"
   set version: current_version(:memory)
   set applications: [
     :runtime_tools
   ]
 end
+
