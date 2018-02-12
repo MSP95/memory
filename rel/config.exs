@@ -29,6 +29,7 @@ environment :dev do
   # the --env flag to Distillery explicitly if you want to use
   # dev mode.
   set dev_mode: true
+  set vm_args: "rel/vm.args"
   set include_erts: false
   set cookie: :"7!ega!qL{42Cm:[JL4rwMfC{0TDHFo~?mwXE2D:>N~H5ee[PeOGRC`UlkN[|,__F"
 end
@@ -36,6 +37,7 @@ end
 environment :prod do
   set include_erts: true
   set include_src: false
+  set vm_args: "rel/vm.args"
   set cookie: :"*qUG_NPfTQ6zm8NlVea2eM{N%5_UlCtE7F,u[EuH,cxB6HWFcI?nRMwOypM2Kr/O"
 end
 
@@ -45,9 +47,9 @@ end
 # will be used by default
 
 release :memory do
+  set vm_args: "rel/vm.args"
   set version: current_version(:memory)
   set applications: [
     :runtime_tools
   ]
 end
-

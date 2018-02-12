@@ -2,118 +2,59 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 
-export default function memory_init(root) {
-  ReactDOM.render(<Board />, root);
-}
-
-class Square extends React.Component {
-
-  change(){
-    let score = this.props.score;
-    if (this.props.pause == false){
-      this.props.action(this.props.id, this.props.value, this.props.flag,score);
-    }
-  }
-
-  render() {
-    let btnClass = classnames({
-      'square-tile': true,
-      'square-selected': this.props.current != null,
-    });
-    return (
-      <button id={this.props.id} className={btnClass} onClick={()=>this.change()}>
-        {this.props.current}
-      </button>
-    );
-  }
+export default function memory_init(root, channel) {
+  ReactDOM.render(<Board channel={channel} />, root);
 }
 
 class Board extends React.Component {
   constructor(props){
     super(props);
+    this.channel = props.channel;
     this.changeHandler = this.changeHandler.bind(this);
-    let squareval = ["A", "B", "C","D","E","F","G","H","A", "B",
-    "C","D","E","F","G","H"];
     this.state = {
-      squares: this.shuffleArray(squareval),
-      currentValues:Array(16).fill(null),
-      previous: [],
+      currentValues:[],
       flag: true,
       score: 0,
+      previd: null,
       isPaused: false,
     };
+    this.channel.join()
+    .receive("ok", this.gotView.bind(this))
+    .receive("error", resp => { console.log("Unable to join", resp); });
   }
-  changeState(id,curr, val,flag, score){
-    let prev = {id: id,value: val};
-    this.setState({
-      previous: prev,
-      flag: flag,
-      score: score,
-      currentValues: curr,
-    });
+  gotView(view) {
+    console.log("New view", view);
+    this.setState(view.game);
   }
-  shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+  // /////////////////////////////////////////////////////////////////////////
+  // Time out logic
+  timeoutHandler(view) {
+    this.setState(view.game);
+    setTimeout(() => {
+      this.channel.push("afterto", {
+        currentValues: this.state.currentValues,
+        previd: this.state.previd,
+      }).receive("ok" ,this.gotView.bind(this));
+    }, 1000);
+  }
+  // /////////////////////////////////////////////////////////////////////////
+  changeHandler(id, current,flag, score, pauseStat){
+    if(pauseStat == false && current==null){
+      this.channel.push("update", {
+        id:id,
+        flag: flag,
+        score: score,
+        currentValues: this.state.currentValues,
+        isPaused: this.state.isPaused,
+      }).receive("ok",this.gotView.bind(this))
+      .receive("dotimeout",this.timeoutHandler.bind(this));
     }
-    return array;
   }
+
   reset(){
-    let squareval = ["A", "B", "C","D","E","F","G","H","A", "B",
-    "C","D","E","F","G","H"];
-    this.setState({
-      squares: this.shuffleArray(squareval),
-      currentValues:Array(16).fill(null),
-      previous: [],
-      flag: true,
-      score: 0,
-      isPaused: false,
-    });
+    this.channel.push("reset", {}).receive("ok",this.gotView.bind(this));
   }
-  pauseInput(pause){
-    this.setState({
-      isPaused: pause,
-    });
-  }
-  changeHandler(id, val,flagy, score){
-    let flag = flagy;
-    let previousId = this.state.previous.id;
-    let previousVal = this.state.previous.value;
-    let currentValues=this.state.currentValues.slice();
-    //Empty tile clicked
-    if(currentValues[id] == null){
-      score+=1;
-      currentValues[id]=val;
-      flag = !flagy;
-      // Its second tile
-      if(flag == true){
-        // elements match <div>&#10003;</div>;
-        if(previousVal == val){
-          this.pauseInput(true);
-          setTimeout(() => {
-            currentValues[id] = <div>&#10003;</div>;
-            currentValues[previousId]=<div>&#10003;</div>;
-            this.changeState(id, currentValues,val,flag, score);
-            this.pauseInput(false);}, 200);
-        }
-          //elements dont match
-        else{
-          this.pauseInput(true);
-          setTimeout(() => {
-            currentValues[id] = null;
-            currentValues[previousId]=null;
-            this.changeState(id, currentValues,val,flag, score);
-            this.pauseInput(false);}, 1000);
-        }
-      }
-        // its first tile
-      else {
-        currentValues[id] = val;
-      }
-      this.changeState(id, currentValues,val,flag, score);
-    }
-  }
+
   calculateWinner(){
     if(_.every(this.state.currentValues,function(num){return num != null})){
       return <div><h1> Congrats! You are a winner!</h1>
@@ -124,10 +65,8 @@ class Board extends React.Component {
     return (
       <Square
         id = {props}
-        value={this.state.squares[props]}
         current={this.state.currentValues[props]}
         action = {this.changeHandler}
-        previous = {this.state.previous}
         flag={this.state.flag}
         score={this.state.score}
         pause={this.state.isPaused}
@@ -142,7 +81,8 @@ class Board extends React.Component {
         <button
           type = "button"
           className="reset-button"
-          onClick={()=>this.reset()}>Reset</button></div>
+          onClick={()=>this.reset()}>Reset</button>
+          </div>
         <div className="tile-grid">
           <table className="table-grid">
             <tbody>
@@ -176,4 +116,19 @@ class Board extends React.Component {
       </div>
     );
   }
+}
+function change(props){
+  return props.action(props.id,props.current, props.flag,props.score,props.pause);
+}
+function Square(props){
+
+  let btnClass = classnames({
+    'square-tile': true,
+    'square-selected': props.current != null,
+  });
+  return (
+    <button id={props.id} className={btnClass} onClick={()=>change(props)}>
+      {props.current}
+    </button>
+  );
 }
