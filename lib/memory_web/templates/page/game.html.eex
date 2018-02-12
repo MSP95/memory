@@ -1,5 +1,6 @@
 
-<h1>Memory Game: <%= @game %></h1>
+<h1>Memory Game </h1>
+<h3>Player: <%= @game %></h3>
 <script>
   window.gameName = "<%= @game %>";
 </script>

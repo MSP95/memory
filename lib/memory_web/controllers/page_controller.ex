@@ -4,6 +4,9 @@ defmodule MemoryWeb.PageController do
   def index(conn, _params) do
     render conn, "index.html"
   end
+  def anon(conn, _params) do
+    render conn, "game.html", game: "Anonymous"
+  end
   def game(conn, params) do
     # IO.inspect params
     render conn, "game.html", game: params["game"]

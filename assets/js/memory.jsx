@@ -23,7 +23,6 @@ class Board extends React.Component {
     .receive("error", resp => { console.log("Unable to join", resp); });
   }
   gotView(view) {
-    console.log("New view", view);
     this.setState(view.game);
   }
   // /////////////////////////////////////////////////////////////////////////
@@ -50,17 +49,19 @@ class Board extends React.Component {
       .receive("dotimeout",this.timeoutHandler.bind(this));
     }
   }
-
+  // /////////////////////////////////////////////////////////////////////////
   reset(){
     this.channel.push("reset", {}).receive("ok",this.gotView.bind(this));
   }
 
+  // /////////////////////////////////////////////////////////////////////////
   calculateWinner(){
     if(_.every(this.state.currentValues,function(num){return num != null})){
       return <div><h1> Congrats! You are a winner!</h1>
       <h4><i>Click Reset button to play again.</i></h4></div>
     }
   }
+  // /////////////////////////////////////////////////////////////////////////
   renderSquare(props) {
     return (
       <Square
@@ -73,16 +74,18 @@ class Board extends React.Component {
         />
     );
   }
+  // /////////////////////////////////////////////////////////////////////////
   render(){
     return (
       <div className="main-game">
-        <div className="status"><h2>Score: {this.state.score}</h2>
-        <div className="winner">{this.calculateWinner()}</div>
-        <button
-          type = "button"
-          className="reset-button"
-          onClick={()=>this.reset()}>Reset</button>
-          </div>
+        <div className="status">
+          <h2 className="score">Score: {this.state.score}</h2>
+          <div className="winner">{this.calculateWinner()}</div>
+          <button
+            type = "button"
+            className="reset-button"
+            onClick={()=>this.reset()}>Reset</button>
+        </div>
         <div className="tile-grid">
           <table className="table-grid">
             <tbody>
@@ -117,6 +120,7 @@ class Board extends React.Component {
     );
   }
 }
+// /////////////////////////////////////////////////////////////////////////
 function change(props){
   return props.action(props.id,props.current, props.flag,props.score,props.pause);
 }
@@ -128,7 +132,8 @@ function Square(props){
   });
   return (
     <button id={props.id} className={btnClass} onClick={()=>change(props)}>
-      {props.current}
+      <div className="tile-content">{props.current}</div>
     </button>
   );
 }
+// /////////////////////////////////////////////////////////////////////////

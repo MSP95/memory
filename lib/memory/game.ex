@@ -28,7 +28,7 @@ defmodule Memory.Game do
 
   def just_update(game, id, value, flag, score, currentValues, isPaused) do
     previd = game.previous.id
-    value = Enum.at(game.squares, id)
+    # value = Enum.at(game.squares, id)
     game = put_in(game, [:previous, :id], id)
     game = put_in(game, [:previous, :value], value)
     previous = game.previous
@@ -45,11 +45,8 @@ defmodule Memory.Game do
   end
   def do_timeout_updates(game, currentValues, previd) do
     thisId = game.previous.value
-    if(thisId == Enum.at(game.squares, previd)) do
-      replacer = "*"
-    else
-      replacer = nil
-    end
+    preVal = Enum.at(game.squares, previd)
+    replacer = if thisId == preVal do "$" else nil end
     currentValues1 = List.replace_at(currentValues, game.previous.id, replacer)
     |> List.replace_at(previd, replacer)
     %{
@@ -67,7 +64,6 @@ defmodule Memory.Game do
     value = Enum.at(game.squares, id)
     if isPaused==false do
       pseudo_flag = flag
-      previousId = game.previous.id
       previousVal = game.previous.value
       if(Enum.at(currentValues,id)==nil) do
         score = score + 1
@@ -83,8 +79,6 @@ defmodule Memory.Game do
           currentValues = List.replace_at(currentValues, id, value)
           just_update(game, id, value, pseudo_flag, score, currentValues, isPaused)
         end
-      else
-        %{}
       end
     end
   end

@@ -2,8 +2,28 @@
 
 @import "bootstrap";
 
-.side { padding: 4ex; text-align: center; }
-h1 { text-align: center; }
-h2 {
+.side {
+  padding: 4ex; text-align: center;
+}
+
+.my-button {
+  width: 100%;
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+  padding: 10px 30px;
   text-align: center;
-  color: red;}
+  display: inline-block;
+  font-size: 25px;
+  margin:4px 2px 2px;
+  -webkit-transition-duration: 0.2s; /* Safari */
+  transition-duration: 0.2s;
+}
+.my-button:hover {
+  background-color: #555555;
+  color: white;
+}
+
+.my-button:focus{
+  outline:none;
+}
