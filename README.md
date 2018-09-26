@@ -1,5 +1,8 @@
 # Memory
 
+A Memory Game built using React on Phoenix framework.
+
+Demo:  [here](https://memory.manishpatil.net) 
 ## Development Instructions
 
 Prerequisites:
